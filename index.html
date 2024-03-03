@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joe’s Hotdogs</title>
+
+    <style>
+        .content {
+            max-width: 500px;
+            margin: auto;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <script>
+            // Associative Array
+            items = []
+            items['hotdogs'] = '$4'
+            items['fries'] = '$3.50'
+            items['soda'] = '$1.50'
+            items['sauerkraut'] = '$1'
+
+            // JSON Object
+            var itemsObject = {
+                hotdogs: 4,
+                fries: 3.50,
+                soda: 1.50,
+                sauerkraut: 1
+            }
+
+            // Function Object
+            function Items(name, prc) {
+                this.name = name
+                this.price = prc
+
+                this.show = function () { return this.name + ": " + this.price }
+            }
+
+            itemsFunction = [new Items('hotdogs', '$4'), new Items('fries', '$3.50'), new Items('soda', '$1.50'), new Items('sauerkraut', '$1')]
+
+            document.write('<h1>Menu</h1>')
+
+            for (let i in itemsObject) {
+                document.write(i + ": $" + itemsObject[i] + "<br>")
+            }
+
+            // document.write("<br>")
+
+            // document.write(itemsFunction.map(i => i.show()).join('<br>'))
+
+            // document.write('<br>')
+            document.write('<br>')
+
+            document.write('<input type="text" name="name" id="name">')
+            document.write('<button id="addToCart">Add to Cart</button>')
+
+            document.write('<br>')
+            document.write('<br>')
+
+            document.write('<div><h2>Shopping Cart</h2><div id="shoppingCartItem"></div></div>')
+
+            document.write('<br>')
+
+            document.write('<button id="checkout">Checkout</button>')
+
+            menuItems = []
+            menuItems['hotdogs'] = 0
+            menuItems['fries'] = 0
+            menuItems['soda'] = 0
+            menuItems['sauerkraut'] = 0
+
+            document.getElementById('addToCart').addEventListener("click", addToCart)
+
+            function addToCart() {
+                item = document.getElementById('name').value.toLowerCase()
+
+                for (menuItem in menuItems) {
+                    if (item == menuItem) {
+                        menuItems[item] += 1
+                    }
+                }
+
+                showInShoppingCart()
+            }
+
+            function showInShoppingCart() {
+                shoppingCartItems = []
+                for (menuItem in menuItems) {
+                    if (menuItems[menuItem] > 0) {
+                        shoppingCartItems += `<span>${menuItem}: ${menuItems[menuItem]}</span> <br>`
+                    }
+                }
+
+                document.getElementById("shoppingCartItem").innerHTML = shoppingCartItems
+            }
+
+            document.getElementById('checkout').addEventListener("click", checkoutItems)
+
+            function checkoutItems() {
+                totalItems = ''
+                total = 0
+
+                for (menuItem in menuItems) {
+                    if (menuItems[menuItem] > 0) {
+                        totalItems += menuItems[menuItem] + " " + menuItem + " = $" + (menuItems[menuItem] * itemsObject[menuItem]) + "\n"
+                        total += (menuItems[menuItem] * itemsObject[menuItem])
+                    }
+
+                    menuItems[menuItem] = 0
+                }
+
+                alert("your order is \n" + totalItems + "\n" + "total: $" + total)
+                document.getElementById('name').value = ""
+                showInShoppingCart()
+            }
+        </script>
+
+    </div>
+</body>
+
+</html>
